@@ -352,9 +352,6 @@ namespace MajdataViewX.Managers
                     }
                 }
 
-                // 3. ≥5 个 sensor 才算一个判定 group（多数通过阈值）
-                if (component.Count < 5) continue;
-
                 int groupId = totalCountsOut.Length;
                 // total 含同 sensor 重复的 note（每个实际 note 都计入判定计数）
                 int total = 0;

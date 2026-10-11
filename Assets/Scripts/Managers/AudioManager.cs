@@ -287,6 +287,7 @@ namespace MajdataViewX.Managers
         {
             _trackSample?.Dispose();
             _trackSample = null;
+            _trackSampleData = null;
             noteSfxPlaybackRequests.Dispose();
             ReleaseRecordingAudio();
             Bass.Stop();
@@ -335,10 +336,12 @@ namespace MajdataViewX.Managers
 
         public void PauseTrack() => _trackSample?.Pause();
 
+        public void ResumeTrack() => _trackSample?.Play();
+
         public void StopTrack()
         {
             waitingForTrackAudioStart = false;
-            _trackSample?.Stop();
+            _trackSample?.Pause();
         }
 
         //for pause resume
@@ -356,10 +359,7 @@ namespace MajdataViewX.Managers
         public unsafe void ResetState()
         {
             StopTrack();
-            // 释放上一曲的音频资源：Bass非托管流立即释放，PCM大数组脱离引用以便GC回收
-            _trackSample?.Dispose();
-            _trackSample = null;
-            _trackSampleData = null;
+            // 不释放上一曲的音频资源，下次load时自然会被释放
             //StopTouchHoldSound();
             //SfxRequestsPtr[TOUCHHOLD] = false;
             ActiveTouchHoldCount = 0;

@@ -1,10 +1,13 @@
 using Cimai;
 using MajdataViewX.Base;
-using MajdataViewX.Types.Enums;
+using MajProtocol.Types.Enums;
 using System;
 using System.Diagnostics;
 using System.IO;
+#if !UNITY_ANDROID
+// Android 平台不支持 MemoryMappedFile，相关代码全部排除
 using System.IO.MemoryMappedFiles;
+#endif
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -40,8 +43,10 @@ namespace MajdataViewX.Managers
 
 
 
+#if !UNITY_ANDROID
         private MemoryMappedFile mmfAudioTime;
         private MemoryMappedViewAccessor mmvAudioTime;
+#endif
 
         public const float SONG_DETAIL_OFFSET = 5f;
 
@@ -50,6 +55,7 @@ namespace MajdataViewX.Managers
             _timeProvider = this;
             ResetState();
 
+#if !UNITY_ANDROID
             var mmfAudioTimeFileStream = new FileStream(
                 MajEnv.MmfAudioTimePath,
                 FileMode.OpenOrCreate,
@@ -67,6 +73,7 @@ namespace MajdataViewX.Managers
                 false
             );
             mmvAudioTime = mmfAudioTime.CreateViewAccessor();
+#endif
         }
 
         private void Update()
@@ -75,10 +82,12 @@ namespace MajdataViewX.Managers
             TimeData.deltaTime = IsRecord ? FRAME_LENGTH_SEC : Time.deltaTime;
             if (!IsStart)
             {
+#if !UNITY_ANDROID
                 mmvAudioTime.Read(0, out float time);
                 AudioTime = time;
                 NoteTime = AudioTime - offset;
                 TimeData.NoteTime = NoteTime;
+#endif
                 return;
             }
 
@@ -93,7 +102,9 @@ namespace MajdataViewX.Managers
                 NoteTime = AudioTime - offset;
             }
 
+#if !UNITY_ANDROID
             mmvAudioTime.Write(0, AudioTime);
+#endif
 
             TimeData.NoteTime = NoteTime;
         }
@@ -229,8 +240,10 @@ namespace MajdataViewX.Managers
 
         private void OnDestroy()
         {
+#if !UNITY_ANDROID
             mmvAudioTime?.Dispose();
             mmfAudioTime?.Dispose();
+#endif
 
             if (SVList.IsCreated) SVList.Dispose();
             if (SVFuncArgs.IsCreated) SVFuncArgs.Dispose();

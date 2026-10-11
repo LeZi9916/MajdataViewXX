@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 
 using MajdataViewX.Utils;
@@ -184,13 +184,19 @@ namespace MajdataViewX.Managers
             _videoPaused = true;
         }
 
+        public void ResumeVideo()
+        {
+            if (!HasVideo) return;
+            _videoPlayer.Play();
+            _videoPaused = false;
+        }
+
 
         public void ResetState()
         {
             _videoPlayer.Stop();
             _videoPaused = false;
-            // 销毁上一曲背景图(Texture2D/Sprite)，避免滞留到下次 LoadBG
-            DestroyLoadedBackground();
+            // 不销毁上一曲背景图(Texture2D/Sprite)，下次 LoadBG 销毁
             gameObject.transform.localScale = new Vector3(CIRCLED_SCALE_X, CIRCLED_SCALE_X, CIRCLED_SCALE_X);
             _spriteRender.material = circledBgMaterial;
             _spriteRender.sprite = defaultBg;

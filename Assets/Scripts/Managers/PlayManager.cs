@@ -4,10 +4,10 @@ using Cysharp.Threading.Tasks;
 using MajdataViewX.Base;
 using MajdataViewX.Notes;
 using MajdataViewX.Notes.SlideUtils;
-using MajdataViewX.Types.Enums;
 using MajdataViewX.Types.MajSetting;
-using MajdataViewX.Types.MajWs;
 using Cimai;
+using MajProtocol.Types;
+using MajProtocol.Types.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -162,22 +162,22 @@ namespace MajdataViewX.Managers
             _bgManager.resizeBg = _setting.ResizeBg;
         }
 
-        public async UniTask UpdateAsync(
+        public async UniTask ParseAsync(
             string? chartText,
-            int selectedDifficulty,
+            int clockCount,
+            float offset,
             string title,
             string artist,
             string level,
             string designer,
-            float offset,
-            int clockCount)
+            int difficulty)
         {
             while (_state is ViewStatus.Busy)
                 await UniTask.Yield();
 
             var previousState = _state;
             _state = ViewStatus.Busy;
-            
+
             var chart = SimaiChart.Parse(chartText ?? string.Empty);
 
             _chart?.Dispose();
@@ -193,7 +193,7 @@ namespace MajdataViewX.Managers
             _objectCounter.CountNoteSum(chart);
             _objectCounter.ReportMeterBpm(chart);
 
-            await _dataLoader.Load(chart, title, artist, level, designer, selectedDifficulty);
+            await _dataLoader.Load(chart, title, artist, level, designer, difficulty);
 
             _state = previousState;
         }
@@ -206,10 +206,12 @@ namespace MajdataViewX.Managers
             if (_state is not (ViewStatus.Loaded or ViewStatus.Paused))
                 return;
 
+            // metadata 与谱面装载都在 Parse 阶段完成，这里只管启动。
             _state = ViewStatus.Busy;
             try
             {
                 await UniTask.SwitchToMainThread();
+
                 var ignoreOffset = startAt - _currentOffset;
 
                 //bg
@@ -265,10 +267,6 @@ namespace MajdataViewX.Managers
                             _state = ViewStatus.Loaded;
                         }).Forget();
                         break;
-                    case PlaybackMode.Preview:
-                        _allPerfectManager.enabled = false;
-                        _state = ViewStatus.Paused;
-                        return;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(playmode), playmode, null);
                 }
@@ -305,6 +303,38 @@ namespace MajdataViewX.Managers
                 _audioManager.PauseTouchHoldSound();
 
                 _state = ViewStatus.Paused;
+            }
+            catch (Exception ex)
+            {
+                _errMsg = ex.ToString();
+                _state = ViewStatus.Error;
+            }
+        }
+
+        /// <summary>
+        /// 从暂停中恢复播放（MajProtocol 新增的 Resume 通道对应）。
+        /// </summary>
+        public async UniTask ResumeAsync()
+        {
+            while (_state is ViewStatus.Busy)
+                await UniTask.Yield();
+
+            if (_state is not ViewStatus.Paused)
+                return;
+
+            _state = ViewStatus.Busy;
+            try
+            {
+                await UniTask.SwitchToMainThread();
+
+                _timeProvider.Resume(null);
+
+                _bgManager.ResumeVideo();
+
+                _audioManager.ResumeTrack();
+                _audioManager.ResumeTouchHoldSound();
+
+                _state = ViewStatus.Playing;
             }
             catch (Exception ex)
             {

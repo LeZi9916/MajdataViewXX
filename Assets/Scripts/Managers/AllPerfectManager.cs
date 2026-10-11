@@ -2,6 +2,7 @@
 
 using Cysharp.Threading.Tasks;
 using MajdataViewX.Types.Enums;
+using MajProtocol.Types.Enums;
 using UnityEngine;
 
 using static MajdataViewX.Base.MajCtx;

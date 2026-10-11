@@ -178,6 +178,9 @@ namespace MajdataViewX.Managers
                 if (timing.Time >= ignore) continue;
                 foreach (var note in timing.Notes)
                 {
+                    if (note.Type is SimaiNoteType.SLIDE && 
+                        timing.Time + note.SlideShootDelay >= ignore)
+                        continue;
                     if (!note.IsBreak)
                     {
                         switch (note.Type)

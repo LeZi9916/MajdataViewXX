@@ -226,7 +226,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1082374789
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 26
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 4242916334dffd14f85ff0523d3edc93, type: 3}
@@ -3980,7 +3980,7 @@ MonoBehaviour:
   defaultBg: {fileID: 21300000, guid: e76da1c30dfa99d4f88a60d737457499, type: 3}
   fullscreenBgMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   circledBgMaterial: {fileID: 2100000, guid: 58b71fdfceaec5b4c9eed8d4fa6fc443, type: 2}
-  ResizeBg: 0
+  resizeBg: 0
 --- !u!212 &655536541
 SpriteRenderer:
   serializedVersion: 2
@@ -4027,7 +4027,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1082374789
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: e76da1c30dfa99d4f88a60d737457499, type: 3}
@@ -4624,9 +4624,9 @@ SpriteMask:
   m_Sprite: {fileID: 21300000, guid: 85371318f6efbc54a8702e8e1835ee9d, type: 3}
   m_MaskAlphaCutoff: 0.285
   m_FrontSortingLayerID: 2089748817
-  m_BackSortingLayerID: 2089748817
-  m_FrontSortingLayer: 7
-  m_BackSortingLayer: 7
+  m_BackSortingLayerID: 0
+  m_FrontSortingLayer: 0
+  m_BackSortingLayer: 0
   m_FrontSortingOrder: 35
   m_BackSortingOrder: 33
   m_IsCustomRangeActive: 1
@@ -4694,11 +4694,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FireworkEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 4239088390834088340, guid: c1701d28c8a13d74a90a9e4dea169092,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4768,7 +4763,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1082374789
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 26
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 4242916334dffd14f85ff0523d3edc93, type: 3}
@@ -5320,8 +5315,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -166167497
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 0}
@@ -11184,7 +11179,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2089748817
-  m_SortingLayer: 7
+  m_SortingLayer: 0
   m_SortingOrder: 34
   m_MaskInteraction: 2
   m_Sprite: {fileID: 21300000, guid: 4242916334dffd14f85ff0523d3edc93, type: 3}

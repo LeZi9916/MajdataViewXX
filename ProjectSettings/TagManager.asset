@@ -47,8 +47,5 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Circle
-    uniqueID: 4128799799
-    locked: 0
   m_RenderingLayers:
   - Default
